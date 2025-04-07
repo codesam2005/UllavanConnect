@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzhavan Connect | Welcome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #81c784;
+            --accent-color: #ff9800;
+            --dark-bg: #1a2c1a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a2c1a, #2e5a2e, #2e7d32);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            opacity: 0;
+        }
+        
+        .logo-3d {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: clamp(4rem, 10vw, 8rem);
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.8);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            opacity: 0;
+        }
+        
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-value {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        .leaf {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .leaf svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--secondary-color);
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+        }
+        
+        .message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        
+        .pulsating-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(129, 199, 132, 0.3) 0%, rgba(46, 125, 50, 0) 70%);
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            z-index: 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div class="pulsating-circle" id="circle1"></div>
+    <div class="pulsating-circle" id="circle2"></div>
+    
+    <div class="container">
+        <h1 class="logo-3d">உழவன் Connect</h1>
+        <p class="tagline">Farm to Table, Without Barriers</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-value" id="progress"></div>
+            </div>
+            <p class="progress-text" id="progress-text">Loading...</p>
+        </div>
+    </div>
+    
+    <p class="message">Creating a sustainable future for farmers and consumers</p>
+    
+    <!-- Generate multiple leaf elements -->
+    <script>
+        // Create leaf SVG elements
+        for (let i = 0; i < 20; i++) {
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf';
+            leaf.style.left = `${Math.random() * 100}vw`;
+            leaf.style.top = `${Math.random() * 100}vh`;
+            
+            // Randomize leaf type
+            const leafType = Math.floor(Math.random() * 3);
+            let svgPath;
+            
+            if (leafType === 0) {
+                svgPath = "M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zm0 0c0-4.97 4.03-9 9-9 0 4.97-4.03 9-9 9zm12-4c-2.76 0-5-2.24-5-5 2.76 0 5 2.24 5 5zm0 0c0-2.76 2.24-5 5-5 0 2.76-2.24 5-5 5zm-27 5c2.76 0 5-2.24 5-5-2.76 0-5 2.24-5 5zm0 0c0-2.76-2.24-5-5-5 0 2.76 2.24 5 5 5z";
+            } else if (leafType === 1) {
+                svgPath = "M17.5,23c4.4183-0.0022,7.9978-3.5817,8-8c-4.4183,0.0022-7.9978,3.5817-8,8c-0.0022-4.4183-3.5817-7.9978-8-8 c4.4183-0.0022,7.9978-3.5817,8-8c4.4183,0.0022,7.9978,3.5817,8,8";
+            } else {
+                svgPath = "M6,3C7.9,6.3,11.4,8,15,8c-3.6,0-7.1,1.7-9,5c1.9-3.3,5.4-5,9-5c-3.6,0-7.1-1.7-9-5";
+            }
+            
+            leaf.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="${svgPath}"/></svg>`;
+            document.body.appendChild(leaf);
+        }
+        
+        // Particles.js configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: "#ffffff"
+                    },
+                    shape: {
+                        type: "circle",
+                        stroke: {
+                            width: 0,
+                            color: "#000000"
+                        }
+                    },
+                    opacity: {
+                        value: 0.3,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 2,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#ffffff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: "repulse"
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: "push"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: {
+                            distance: 100,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+        
+        // GSAP Animations
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animation timeline
+            const tl = gsap.timeline();
+            
+            // Animate container
+            tl.to('.container', {
+                opacity: 1,
+                duration: 1,
+                ease: "power2.out"
+            });
+            
+            // Animate logo
+            tl.from('.logo-3d', {
+                y: 50,
+                opacity: 0,
+                duration: 1.2,
+                ease: "elastic.out(1, 0.5)"
+            }, "-=0.5");
+            
+            // Animate tagline
+            tl.to('.tagline', {
+                opacity: 1,
+                duration: 1,
+                ease: "power2.out"
+            }, "-=0.3");
+            
+            // Animate progress container
+            tl.to('.progress-container', {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out"
+            }, "-=0.5");
+            
+            // Animate progress bar
+            tl.to('#progress', {
+    width: "100%",
+    duration: 3,
+    ease: "power1.inOut",
+    onUpdate: function () {
+        const progress = Math.round(this.progress() * 100);
+        document.getElementById('progress-text').textContent = `Loading... ${progress}%`;
+    },
+    onComplete: function () {
+        document.getElementById('progress-text').textContent = 'Ready!';
+        setTimeout(() => {
+            window.location.href = "Identification/indentify.html";
+        }, 1500);
+    }
+});
+
+            
+            // Animate message
+            tl.to('.message', {
+                opacity: 1,
+                duration: 1,
+                ease: "power2.out"
+            }, "-=3");
+            
+            // Animate leaves
+            gsap.to('.leaf', {
+                opacity: 0.8,
+                stagger: 0.1,
+                duration: 2,
+                ease: "power1.out",
+                y: "-=100",
+                rotation: "random(-30, 30)",
+                onComplete: function() {
+                    // Make leaves float
+                    gsap.to('.leaf', {
+                        y: "random(-50, 50)",
+                        x: "random(-20, 20)",
+                        rotation: "random(-15, 15)",
+                        duration: "random(3, 8)",
+                        ease: "sine.inOut",
+                        repeat: -1,
+                        yoyo: true,
+                        stagger: 0.1
+                    });
+                }
+            });
+            
+            // Animate circles
+            gsap.to('#circle1', {
+                opacity: 0.5,
+                scale: 1.2,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+            
+            gsap.to('#circle2', {
+                opacity: 0.3,
+                scale: 1.5,
+                duration: 3.5,
+                delay: 0.5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+        });
+    </script>
+</body>
+</html>
