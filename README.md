@@ -29,7 +29,9 @@
 
 1. Download or clone this repository.
 2. Go to the `Customer-Page` folder.
-3. Open `loading.html` in any modern browser (Chrome recommended).
+3. Open `index.html` in any modern browser (Chrome recommended).
 4. Explore the customer experience of Ulvan Connect.
+
+5. HERE IS MY VERCEL LINK - https://ullavan-connect-wdjd.vercel.app/
 
 
